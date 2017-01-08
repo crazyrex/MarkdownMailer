@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Markdig">
+      <HintPath>..\packages\Markdig.0.10.4\lib\net40\Markdig.dll</HintPath>
+    </Reference>
     <Reference Include="MarkdownSharp">
       <HintPath>..\packages\MarkdownSharp.1.13.0.0\lib\35\MarkdownSharp.dll</HintPath>
     </Reference>
@@ -47,7 +50,8 @@
   <ItemGroup>
     <Compile Include="IMailSender.cs" />
     <Compile Include="ISmtpClient.cs" />
-    <Compile Include="MailSender.cs" />
+    <Compile Include="MarkdigMailSender.cs" />
+    <Compile Include="MarkdownSharpMailSender.cs" />
     <Compile Include="MailSenderConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
