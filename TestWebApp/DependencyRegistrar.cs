@@ -24,7 +24,7 @@ namespace TestWebApp {
                 //    Credentials = new NetworkCredential("<your-gmail-address>", "<your-gmail-password>") 
                 //};
 
-                return new MailSender(mailSenderConfiguration);
+                return new MarkdownSharpMailSender(mailSenderConfiguration);
             });
         }
     }

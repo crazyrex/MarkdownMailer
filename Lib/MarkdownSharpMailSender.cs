@@ -6,26 +6,26 @@ using System.IO;
 
 namespace MarkdownMailer
 {
-    public class MailSender : IMailSender
+    public class MarkdownSharpMailSender : IMailSender
     {
         readonly ISmtpClient smtpClient;
 
-        public MailSender()
+        public MarkdownSharpMailSender()
             : this(new SmtpClientWrapper(new SmtpClient()), null)
         {
         }
         
-        public MailSender(MailSenderConfiguration configuration)
+        public MarkdownSharpMailSender(MailSenderConfiguration configuration)
             : this(new SmtpClientWrapper(new SmtpClient()), configuration)
         {
         }
 
-        public MailSender(SmtpClient smtpClient)
+        public MarkdownSharpMailSender(SmtpClient smtpClient)
             : this(new SmtpClientWrapper(smtpClient), null)
         {
         }
 
-        internal MailSender(
+        internal MarkdownSharpMailSender(
             ISmtpClient smtpClient,
             MailSenderConfiguration configuration)
         {
@@ -85,13 +85,23 @@ namespace MarkdownMailer
             Send(mailMessage);
         }
 
-        public void Send(MailMessage mailMessage) {
+        public void Send(MailMessage mailMessage)
+        {
+            Send(mailMessage, null);
+        }
+
+        public void Send(MailMessage mailMessage, Markdown markdownGenerator) {
             if (smtpClient.DeliveryMethod == SmtpDeliveryMethod.SpecifiedPickupDirectory
                 && !Directory.Exists(smtpClient.PickupDirectoryLocation))
                 Directory.CreateDirectory(smtpClient.PickupDirectoryLocation);
-            
+
+            if (markdownGenerator == null)
+            {
+                markdownGenerator = new Markdown();
+            }
+
             string markdownBody = mailMessage.Body;
-            string htmlBody = new Markdown().Transform(markdownBody);
+            string htmlBody = markdownGenerator.Transform(markdownBody);
 
             AlternateView textView = AlternateView.CreateAlternateViewFromString(
                 markdownBody, 
